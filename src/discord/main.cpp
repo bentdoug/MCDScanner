@@ -5,11 +5,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
-
+#include "config.h"
+#include "processMessages.h"
 
 void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
-    const char* fifoPath = "/home/raspi1/Documents/POCSAG_bot/montcoFifo";
+    const char* fifoPath = "/home/benjamin/Documents/Projects/POCSAG_bot/montcoFifo";
     char buffer[1200];
+    enum County county = MONTCO;
 
     while (true) {
         // Open the FIFO for reading
@@ -23,8 +25,20 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
         if (bytesRead > 0) {
             std::cout << "Received: " << buffer << std::endl;
             // Create the message
+            std:string processedMsg;
+            switch (county)
+            {
+            case MONTCO:
+                processedMsg = processMontCo(buffer);
+                break;
+            
+            case DELCO:
+                processedMsg = processDelCo(buffer);
+            default:
+                break;
+            }
             dpp::message msg;
-            msg.content = buffer;
+            msg.content = processedMsg;
             msg.channel_id = channel_id;
 
             // Send the message
@@ -39,6 +53,7 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
 }
 
 int main() {
+
     dpp::cluster bot(BOT_TOKEN);
 
     bot.on_log(dpp::utility::cout_logger());
@@ -47,7 +62,7 @@ int main() {
         std::cout << "Bot is online!" << std::endl;
 
         // Start the FIFO  message sending in a separate thread
-        std::thread messageThread(send_message_from_fifo, std::ref(bot), CHANNEL_ID);
+        std::thread messageThread(send_message_from_fifo, std::ref(bot), GENERAL_CHANNEL_ID);
         messageThread.detach(); // Detach the thread to allow it to run independently
     });
 

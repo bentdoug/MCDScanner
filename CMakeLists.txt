@@ -7,6 +7,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #create executable
 add_executable(${PROJECT_NAME}
 	src/discord/main.cpp
+	src/discord/processMessages.cpp
 )
 
 # find DPP package
