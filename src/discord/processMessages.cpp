@@ -42,7 +42,8 @@ string processMontCo(const string& rawInputMsg){
 
 		locationToken = inputMsg.substr(0, inputMsg.find(munDelim));
 		municipalityToken = inputMsg.substr(inputMsg.find(munDelim), inputMsg.find(natDelim));
-		natureToken = inputMsg.substr(inputMsg.find(natDelim));
+		municipalityToken = municipalityToken.substr(4, municipalityToken.find("NAT:"));
+		natureToken = inputMsg.substr(inputMsg.find(natDelim)-4);
 		natureToken = natureToken.substr(4, natureToken.find(',')-4);
 		notesToken = inputMsg.substr(inputMsg.find(notesDelim), inputMsg.find(eotDelim));
 		try // try to determine assigned trucks. This may not work if the notes are super long
@@ -65,13 +66,28 @@ string processMontCo(const string& rawInputMsg){
 	// build discord msg
 	std::string discordMsg;
 	std::cout << "\n\nNature: " << natureToken << "\n\n\n";
-	discordMsg = "## " + iType + " - " + natureToken + "\n "; // create header of incident type
-	discordMsg = discordMsg + municipalityToken + " : " + locationToken + "\n";
-	discordMsg = discordMsg + notesToken; // add notes to the msg
+	discordMsg = "## " + iType + " - " + natureToken + " - " + municipalityToken + "\n "; // create header of incident type
+	discordMsg = discordMsg + "```txt\n" + inputMsg + "\n```";
 
 	return discordMsg;
 }
 
-string processDelCo(const string& inputMsg){
-	return "Not yet implemented";
+string processDelCo(const string& rawInputMsg){
+	// Delims
+	string locationDelim = "LOC:";
+	string crossSt1Delim = "X1:";
+	string crossSt2Delim = "X2:";
+	string natureDelim = "Nature:";
+	string timeDelim = "TIME:";
+	string IncIdDelim = "Inc:";
+	string beatDelim = "Beat:"; // map/Box
+	string trucksDelim = "Disp:";
+	string eotDelim = "<EOT>";
+	
+	string inputMsg = rawInputMsg.substr(0, rawInputMsg.find(eotDelim));
+
+	std::string discordMsg;
+	discordMsg = "```txt \n" + inputMsg + "\n ```";
+
+	return discordMsg;
 }
