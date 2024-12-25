@@ -25,7 +25,8 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
         if (bytesRead > 0) {
             std::cout << "Received: " << buffer << std::endl;
             // Create the message
-            std:string processedMsg;
+            //std::string processedMsg;
+            dpp::embed processedMsg;
             switch (county)
             {
             case MONTCO:
@@ -34,7 +35,7 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
                 break;
             
             case DELCO:
-                processedMsg = processDelCo(buffer);
+                processedMsg = processDelCoEmbed(buffer);
 		channel_id = DELCO_CHANNEL_ID;
             default:
                 break;

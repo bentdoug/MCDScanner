@@ -10,6 +10,8 @@ string processMontCo(const string& inputMsg);
     
 string processDelCo(const string& inputMsg);
 
+dpp::embed processDelCoEmbed(const string& rawInputMsg);
+
 // Create dict with pocsag address keys : station number/information values
 const std::map<std::string, std::vector<std::string>> delCoCapCodes = {
   { "0011008", {"1 FIRE", "Folcroft"} },
