@@ -30,7 +30,7 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
             switch (county)
             {
             case MONTCO:
-                processedMsg = processMontCo(buffer);
+                //processedMsg = processMontCo(buffer);
 		channel_id = MONTCO_CHANNEL_ID;
                 break;
             
@@ -41,9 +41,9 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
                 break;
             }
             dpp::message msg;
-            msg.content = processedMsg;
+            msg.add_embed(processedMsg);
             msg.channel_id = channel_id;
-	    std::cout << processedMsg << channel_id;
+	    //std::cout << processedMsg << channel_id;
             // Send the message
             bot.message_create(msg, [](const dpp::confirmation_callback_t& callback) {
                 if (callback.is_error()) {

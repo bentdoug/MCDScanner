@@ -135,8 +135,7 @@ dpp::embed processDelCoEmbed(const string& rawInputMsg){
     /*--------- Incident Nature ---------*/
     /* Regex for getting incident nature */
     // Regular expression to match the nature after "Nature:"
-    std::regex nature_regex("Nature:([^:]+?)\s+TIME:");
-    std::smatch match;
+    std::regex nature_regex("Nature:([^:]+?)[ \\t\\r\\n\\f\\v]+TIME:");
     std::string nature;
     // Search for the nature
     if (std::regex_search(rawInputMsg, match, nature_regex)) {
@@ -162,8 +161,7 @@ dpp::embed processDelCoEmbed(const string& rawInputMsg){
 
     /*--------- Description ----------*/
     // Regular expression to extract everything up until "Disp:"
-    std::regex pre_disp_regex("^(.*?)(?=\s+Disp:)");
-    std::smatch match;
+    std::regex pre_disp_regex("^(.*?)(?=[ \\t\\r\\n\\f\\v]+Disp:)");
     string description;
 
     // Search for the content before "Disp:"

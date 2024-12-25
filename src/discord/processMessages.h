@@ -1,5 +1,7 @@
 #include <string>
 #include <map>
+#include <dpp/dpp.h>
+#include <vector>
 using namespace std;
 
 #ifndef PROCESS_MESSAGES_H // Header guard to prevent multiple inclusion
