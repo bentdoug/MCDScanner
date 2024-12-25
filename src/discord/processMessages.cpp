@@ -82,12 +82,15 @@ string processDelCo(const string& rawInputMsg){
 	string IncIdDelim = "Inc:";
 	string beatDelim = "Beat:"; // map/Box
 	string trucksDelim = "Disp:";
-	string eotDelim = "<EOT>";
-	
+	string eotDelim = "<EOM>";
+	string discordMsg;	
 	string inputMsg = rawInputMsg.substr(0, rawInputMsg.find(eotDelim));
 
-	std::string discordMsg;
-	discordMsg = "```txt \n" + inputMsg + "\n ```";
-
+	try{
+		discordMsg = "```txt\n" + inputMsg + "\n ```";
+	}
+	catch(...) {
+		return inputMsg;
+	}
 	return discordMsg;
 }

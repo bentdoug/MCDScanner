@@ -9,9 +9,9 @@
 #include "processMessages.h"
 
 void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
-    const char* fifoPath = "/home/benjamin/Documents/Projects/POCSAG_bot/montcoFifo";
+    const char* fifoPath = "/home/raspi1/Documents/POCSAG_bot/montcoFifo";
     char buffer[1200];
-    enum County county = MONTCO;
+    enum County county = DELCO;
 
     while (true) {
         // Open the FIFO for reading
@@ -30,21 +30,24 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
             {
             case MONTCO:
                 processedMsg = processMontCo(buffer);
+		channel_id = MONTCO_CHANNEL_ID;
                 break;
             
             case DELCO:
                 processedMsg = processDelCo(buffer);
+		channel_id = DELCO_CHANNEL_ID;
             default:
                 break;
             }
             dpp::message msg;
             msg.content = processedMsg;
             msg.channel_id = channel_id;
-
+	    std::cout << processedMsg << channel_id;
             // Send the message
             bot.message_create(msg, [](const dpp::confirmation_callback_t& callback) {
                 if (callback.is_error()) {
                     std::cerr << "Failed to send message";
+		    std::cerr << callback.get_error().message << std::endl;
                 }
             });
         }   
