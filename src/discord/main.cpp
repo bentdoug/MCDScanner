@@ -40,9 +40,7 @@ void send_message_from_fifo(dpp::cluster& bot, dpp::snowflake channel_id) {
             default:
                 break;
             }
-            dpp::message msg;
-            msg.add_embed(processedMsg);
-            msg.channel_id = channel_id;
+            dpp::message msg(channel_id, processedMsg);
 	    //std::cout << processedMsg << channel_id;
             // Send the message
             bot.message_create(msg, [](const dpp::confirmation_callback_t& callback) {
